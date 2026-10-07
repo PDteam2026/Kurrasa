@@ -1,0 +1,19 @@
+{
+  "name": "كراسة — رفيقك بالدراسة",
+  "short_name": "كراسة",
+  "description": "تطبيق دراسة مجاني بلا حساب: مواد وفصول ومواضيع، قراءة PDF، بطاقات مراجعة، مؤقت بومودورو وجدول يومي.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FBF6EA",
+  "theme_color": "#FBF6EA",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
