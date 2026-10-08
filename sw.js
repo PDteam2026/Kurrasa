@@ -1,8 +1,8 @@
 /* Service worker: offline support. Bump CACHE on every release. */
-const CACHE = "kurrasa-v1";
+const CACHE = "kurrasa-v2";
 const SHELL = [
   "./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest",
-  "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./favicon-32.png",
+  "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./favicon-32.png", "./pdiqs-logo.png",
   "./pdf.min.mjs", "./pdf.worker.min.mjs"
 ];
 self.addEventListener("install", (e) => {

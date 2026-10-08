@@ -137,3 +137,26 @@ nav.tabs .in{display:flex;width:100%;max-width:680px;margin:0 auto}
 
 @media (prefers-reduced-motion:reduce){.ring .fg{transition:none}}
 @media (min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ---- v2 additions ---- */
+.chart{width:100%;height:auto;direction:ltr}
+.badges{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bdg{border:1px solid var(--gold-soft);border-radius:12px;padding:12px;background:var(--card);text-align:center}
+.bdg.off{opacity:.45;filter:grayscale(1);border-color:var(--line)}
+.bdg .ic{font-size:26px;color:var(--gold);line-height:1.2}
+.padwrap{flex:1;min-height:0;touch-action:none;background:#FFFDF6;overflow:hidden}
+.padwrap canvas{display:block}
+.padbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--card)}
+.padbar .sw{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.padbar .sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--gold)}
+.ohead input[type=text]{min-width:0}
+
+/* company intro (shown once per session) */
+#splash{position:fixed;inset:0;z-index:100;background:#E3DCC4;display:grid;place-items:center;transition:opacity .55s ease;cursor:pointer}
+#splash.out{opacity:0;pointer-events:none}
+#splash::before{content:"";position:absolute;inset-inline:12%;top:50%;height:2px;background:#B58A2E;transform:scaleX(0);animation:sp-line .9s ease-out .15s forwards}
+#splash img{width:min(88vw,760px);height:auto;display:block;clip-path:inset(50% 0 50% 0);opacity:.2;animation:sp-open 1.5s cubic-bezier(.2,.7,.2,1) .55s forwards,sp-settle 1s ease-out 2.1s forwards}
+@keyframes sp-line{0%{transform:scaleX(0);opacity:1}70%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+@keyframes sp-open{to{clip-path:inset(0 0 0 0);opacity:1}}
+@keyframes sp-settle{0%{transform:scale(1)}50%{transform:scale(1.025)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){#splash::before{display:none}#splash img{animation:none;clip-path:none;opacity:1}}
