@@ -1,5 +1,5 @@
 /* Service worker: offline support. Bump CACHE on every release. */
-const CACHE = "kurrasa-v2";
+const CACHE = "kurrasa-v3";
 const SHELL = [
   "./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./favicon-32.png", "./pdiqs-logo.png",
@@ -14,6 +14,7 @@ self.addEventListener("activate", (e) => {
       .then(() => self.clients.claim())
   );
 });
+/* Network first (so updates show up immediately when online), cache as the offline fallback. */
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
@@ -21,16 +22,19 @@ self.addEventListener("fetch", (e) => {
   const sameOrigin = url.origin === self.location.origin;
   const isFont = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
   if (!sameOrigin && !isFont) return;
+  const fromCache = () => caches.match(req).then((hit) => hit || (req.mode === "navigate" ? caches.match("./index.html") : Response.error()));
+  if (isFont) {
+    e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {}); return res; }).catch(() => Response.error())));
+    return;
+  }
   e.respondWith(
-    caches.match(req).then((hit) => {
-      const net = fetch(req).then((res) => {
-        if (res && (res.ok || res.type === "opaque")) {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
-        }
-        return res;
-      }).catch(() => hit || (req.mode === "navigate" ? caches.match("./index.html") : Response.error()));
-      return hit || net;
+    new Promise((resolve) => {
+      let settled = false;
+      const timer = setTimeout(() => { if (!settled) fromCache().then((r) => { if (!settled) { settled = true; resolve(r); } }); }, 3500);
+      fetch(req, { cache: "no-cache" }).then((res) => {
+        if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {}); }
+        if (!settled) { settled = true; clearTimeout(timer); resolve(res); }
+      }).catch(() => { clearTimeout(timer); fromCache().then((r) => { if (!settled) { settled = true; resolve(r); } }); });
     })
   );
 });

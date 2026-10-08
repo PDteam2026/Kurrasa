@@ -1288,13 +1288,11 @@ function pickQ(card) {
 
 /* ---------- start ---------- */
 (function splash() {
-  const el = $("splash"); if (!el) return;
-  let seen = false; try { seen = sessionStorage.getItem("kurrasa-splash") === "1"; } catch (e) { /* ignore */ }
-  if (seen) { el.remove(); return; }
-  try { sessionStorage.setItem("kurrasa-splash", "1"); } catch (e) { /* ignore */ }
+  let el = $("splash");
+  if (!el) { el = document.createElement("div"); el.id = "splash"; el.setAttribute("role", "presentation"); el.innerHTML = '<img src="pdiqs-logo.png" alt="PDIQS Studios">'; document.body.appendChild(el); }
   let closed = false;
   const done = () => { if (closed) return; closed = true; el.classList.add("out"); setTimeout(() => el.remove(), 600); };
-  el.addEventListener("click", done); setTimeout(done, 3600);
+  el.addEventListener("click", done); setTimeout(done, 3800);
 })();
 render();
 loadEstimate();
